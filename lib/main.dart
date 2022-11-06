@@ -50,7 +50,7 @@ class _HomeState extends State<Home> {
                     padding: const EdgeInsets.all(14),
                     textStyle: const TextStyle(
                       color: Colors.white,
-                    )
+                    ),
                   ),
                   onPressed: () {},
                   child: const Text("ADD"),
