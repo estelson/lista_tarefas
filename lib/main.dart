@@ -22,7 +22,45 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Lista de tarefas"),
+        backgroundColor: Colors.blueAccent,
+        centerTitle: true,
+      ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.fromLTRB(17, 1, 7, 1),
+            child: Row(
+              children: <Widget>[
+                const Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: "Nova tarefa",
+                      labelStyle: TextStyle(color: Colors.blueAccent),
+                    ),
+                  ),
+                ),
+                // Adaptação do RaisedButton (deprecated) para ElevatedButton
+                // https://stackoverflow.com/questions/72511165/error-the-method-raisedbutton-isnt-defined-for-the-class-pomodorostate
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent,
+                    padding: const EdgeInsets.all(14),
+                    textStyle: const TextStyle(
+                      color: Colors.white,
+                    )
+                  ),
+                  onPressed: () {},
+                  child: const Text("ADD"),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   Future<File> _getFile() async {
@@ -42,7 +80,7 @@ class _HomeState extends State<Home> {
     try {
       final file = await _getFile();
       return file.readAsString();
-    } catch(e) {
+    } catch (e) {
       return e.toString();
     }
   }
