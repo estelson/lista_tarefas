@@ -22,6 +22,9 @@ class _HomeState extends State<Home> {
 
   List _toDoList = [];
 
+  late Map<String, dynamic> _lastRemoved;
+  late int _lastRemovedPos;
+
   @override
   void initState() {
     super.initState();
@@ -96,10 +99,9 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget buildItem(context, index) {
+  Widget buildItem(BuildContext context, int index) {
     return Dismissible(
       key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
-
       background: Container(
         color: Colors.red,
         child: const Align(
@@ -110,9 +112,7 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-
       direction: DismissDirection.startToEnd,
-
       child: CheckboxListTile(
         title: Text(_toDoList[index]["title"]),
         value: _toDoList[index]["ok"],
@@ -128,6 +128,33 @@ class _HomeState extends State<Home> {
           });
         },
       ),
+      onDismissed: (direction) {
+        setState(() {
+          _lastRemoved = Map.from(_toDoList[index]);
+          _lastRemovedPos = index;
+          _toDoList.removeAt(index);
+
+          _saveData();
+
+          final snack = SnackBar(
+            content: Text("Tarefa '${_lastRemoved["title"]}' removida!"),
+            action: SnackBarAction(
+              label: "Desfazer",
+              onPressed: () {
+                setState(() {
+                  _toDoList.insert(_lastRemovedPos, _lastRemoved);
+                  _saveData();
+                });
+              },
+            ),
+            duration: const Duration(seconds: 2),
+          );
+
+          // Scaffold.of(context).showSnackBar(snack); - Deprecated
+          // https://stackoverflow.com/questions/68011487/the-method-showsnackbar-isnt-defined-for-the-type-buildcontext
+          ScaffoldMessenger.of(context).showSnackBar(snack);
+        });
+      },
     );
   }
 
