@@ -175,6 +175,7 @@ class _HomeState extends State<Home> {
 
           // Scaffold.of(context).showSnackBar(snack); - Deprecated
           // https://stackoverflow.com/questions/68011487/the-method-showsnackbar-isnt-defined-for-the-type-buildcontext
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(snack);
         });
       },
